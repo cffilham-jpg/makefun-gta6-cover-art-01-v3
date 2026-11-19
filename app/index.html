@@ -1,23 +1,70 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cover Snap</title>
-<link rel="stylesheet" href="./style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#181418">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+  <title>Vice Line Studio</title>
 </head>
 <body>
-<main class="app">
-  <section class="controls">
-    <h1>Cover Snap</h1>
-    <p>A photo and a caption, made into a square cover.</p>
-    <label>Photo <input id="photo" type="file" accept="image/*"></label>
-    <label>Caption <input id="caption" type="text" maxlength="40" value="Sunset Heist"></label>
-    <button id="export" type="button">Export PNG 1080 x 1080</button>
-    <p id="status" role="status"></p>
-  </section>
-  <canvas id="cover" width="1080" height="1080" aria-label="The cover"></canvas>
-</main>
-<script type="module" src="./src/main.js"></script>
+  <header class="top">
+    <a class="brand" href="./"><span class="mark" aria-hidden="true">◩</span><strong>VICE LINE</strong><span class="brand-tag">STUDIO</span></a>
+    <div class="header-actions"><span class="local"><i></i> Local workspace</span><button id="export" class="export" disabled>Export PNG <span aria-hidden="true">↗</span></button></div>
+  </header>
+  <div class="workspace">
+    <nav id="steps" aria-label="Editor steps">
+      <button data-step="mood" aria-current="step"><span>01</span>Mood</button>
+      <button data-step="panels"><span>02</span>Panels</button>
+      <button data-step="photos"><span>03</span>Photos</button>
+      <button data-step="grade"><span>04</span>Grade</button>
+      <button data-step="lettering"><span>05</span>Lettering</button>
+      <button data-step="delivery"><span>06</span>Export</button>
+    </nav>
+    <aside class="inspector" aria-label="Cover controls">
+      <section data-page="mood">
+        <h1>Choose a mood</h1><p>Start with a preset, then make it yours.</p>
+        <div id="presets" class="preset-grid"></div>
+      </section>
+      <section data-page="panels" hidden>
+        <h2>Build the collage</h2><p>Pick a layout, then select a panel to frame.</p>
+        <div id="layouts" class="layout-grid"></div>
+      </section>
+      <section data-page="photos" hidden>
+        <h2>Load your photos</h2><p>Choose a panel, then add a photo or pick one from the library.</p>
+        <label class="upload">＋ Add photos<input id="upload" type="file" accept="image/*" multiple></label>
+        <button id="fill" class="utility">Use selected photo in all panels</button>
+        <div id="library" class="preset-grid"></div>
+      </section>
+      <section data-page="grade" hidden>
+        <h2>Grade the cover</h2><p>Apply a film grade to the whole collage.</p>
+        <div id="grades" class="layout-grid"></div>
+      </section>
+      <section data-page="lettering" hidden>
+        <h2>Set the type</h2><p>Dial in the headline and cover details.</p>
+        <div id="type-fields"></div>
+      </section>
+      <section data-page="delivery" hidden>
+        <h2>Export your cover</h2><p>Choose a format. The PNG uses the full pixel dimensions shown below.</p>
+        <div id="sizes" class="size-list"></div>
+      </section>
+      <section class="crop">
+        <div class="crop-head"><h2>Panel framing</h2><button id="reset" class="utility">Auto frame</button></div>
+        <div id="panel-picker" class="panel-picker"></div>
+        <label>Zoom <input id="zoom" type="range" min="1" max="3" value="1" step=".01"></label>
+        <label>Horizontal <input id="pan-x" type="range" min="-1" max="1" value="0" step=".01"></label>
+        <label>Vertical <input id="pan-y" type="range" min="-1" max="1" value="0" step=".01"></label>
+      </section>
+    </aside>
+    <main class="viewer">
+      <div class="viewer-head"><div><span class="live-dot"></span> LIVE PREVIEW</div><div id="formats" aria-label="Cover format"></div></div>
+      <div class="stage" id="stage"><div class="artboard"><canvas id="cover" aria-label="Live cover preview. Drag a panel to reframe its photo."></canvas></div></div>
+      <div class="viewer-foot"><span id="spec"></span><span>Drag a panel to reframe</span></div>
+      <div class="film-tray"><div><strong>PHOTO STRIP</strong><small>Click a photo to fill the selected panel</small></div><div id="tray"></div><button id="quick-add" class="utility">＋ Add photo</button></div>
+    </main>
+  </div>
+  <div id="status" role="status" aria-live="polite"></div>
+  <script type="module" src="src/main.js"></script>
 </body>
 </html>
